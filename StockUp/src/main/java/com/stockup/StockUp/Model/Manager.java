@@ -19,7 +19,7 @@ public class Manager {
     @Column(name = "senha")
     private String password;
 
-    public Manager(int idManager, String nome, String cnpj, String email, String password) {
+    public Manager( String nome, String cnpj, String email, String password) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.email = email;
