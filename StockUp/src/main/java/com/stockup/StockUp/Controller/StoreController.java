@@ -1,6 +1,7 @@
 package com.stockup.StockUp.Controller;
 
 import com.stockup.StockUp.Model.Manager;
+import com.stockup.StockUp.Model.Manager_Grande;
 import com.stockup.StockUp.repository.MySqlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class StoreController {
 
     @PostMapping("/insert-manager")
     public Manager insertManager(@RequestBody Map<String , String> body){
-        Manager current = new Manager(body.get("nome"), body.get("cnpj"),body.get("email"),body.get("senha"));
+        Manager current = new Manager_Grande(body.get("nome"), body.get("cnpj"),body.get("email"),body.get("senha"));
         mySqlRepository.save(current);
         return current;
     }

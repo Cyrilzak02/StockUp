@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "manager")
 
-public class Manager {
+public abstract class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idmanager;
@@ -69,4 +69,6 @@ public class Manager {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    abstract String gerar_relatorios();
 }
