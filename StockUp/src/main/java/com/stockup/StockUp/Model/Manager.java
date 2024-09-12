@@ -34,9 +34,7 @@ public abstract class Manager {
         return idmanager;
     }
 
-    public void setIdManager(int idManager) {
-        this.idmanager = idManager;
-    }
+
 
     public String getNome() {
         return nome;
