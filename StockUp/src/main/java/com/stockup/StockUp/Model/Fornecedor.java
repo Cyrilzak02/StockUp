@@ -1,6 +1,7 @@
 package com.stockup.StockUp.Model;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,9 +19,15 @@ public class Fornecedor {
         this.razao_social = razao_social;
     }
     @OneToMany(mappedBy = "fornecedores")
-    private Set<FornecedorProduto> abastecimento = new HashSet<>();
+    private ArrayList<FornecedorProduto> abastecimento;
 
     public Fornecedor() {
+    }
+
+    public Fornecedor(Integer idFornecedor, String razao_social) {
+        this.idFornecedor = idFornecedor;
+        this.razao_social = razao_social;
+        this.abastecimento = new ArrayList<>();
     }
 
     public void setIdFornecedor(Integer idFornecedor) {

@@ -2,6 +2,7 @@ package com.stockup.StockUp.Model;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,8 +30,10 @@ public class Produto {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "produtos")
-    private Set<FornecedorProduto> abastecimento = new HashSet<>();
+    @OneToMany(mappedBy = "produto")
+    private ArrayList<FornecedorProduto> abastecimento;
+    @OneToMany(mappedBy = "produto")
+    private ArrayList<Venda_produto> venda_produtos;
 
 
 
@@ -40,6 +43,7 @@ public class Produto {
         this.qtd_estoque = qtd_estoque;
         this.manager = manager;
         this.categoria = categoria;
+        this.abastecimento = new ArrayList<>();
     }
 
     public Produto() {
