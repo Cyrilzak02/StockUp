@@ -69,4 +69,18 @@ public abstract class Manager {
     }
 
     abstract String gerar_relatorios();
+
+    public Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario){
+        return new Produto(descricao,sku,qtd_estoque,this,categoria,preco_unitario);
+    }
+    public Produto editar_produto(Produto produto ,String descricao,Integer qtd_estoque, Categoria categoria, Float preco_unitario){
+        produto.setDescricao(descricao);
+        produto.setQtd_estoque(qtd_estoque);
+        produto.setCategoria(categoria);
+        produto.setPreco_unitario(preco_unitario);
+        return produto;
+    }
+    
+
+
 }

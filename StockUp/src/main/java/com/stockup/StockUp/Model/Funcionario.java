@@ -1,6 +1,10 @@
 package com.stockup.StockUp.Model;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Date;
+
 @Entity
 @Table(name = "funcionarios")
 public class Funcionario {
@@ -70,4 +74,21 @@ public class Funcionario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public Venda cadastrar_venda(Float valor, Date data_venda, Funcionario funcionario , ArrayList<Venda_produto> Venda_produtos) {
+        Venda venda = new Venda(valor , data_venda , funcionario);
+        venda.setVenda_produtos(Venda_produtos);
+
+
+        return venda;
+    }
+
+
+
+
+
+
+
+
+
 }

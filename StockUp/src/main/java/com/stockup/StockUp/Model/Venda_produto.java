@@ -21,8 +21,35 @@ public class Venda_produto {
     @Column(name = "qtd_produto")
     private Integer qtd;
 
+    public Venda_produtoId getVendaProdutoId() {
+        return vendaProdutoId;
+    }
 
+    public void setVendaProdutoId(Venda_produtoId vendaProdutoId) {
+        this.vendaProdutoId = vendaProdutoId;
+    }
 
+    public Venda getVenda() {
+        return venda;
+    }
 
+    public void setVenda(Venda venda) {
+        this.venda = venda;
+    }
 
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public Integer getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
+    }
 }

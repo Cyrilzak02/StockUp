@@ -68,4 +68,8 @@ public class Venda {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
+
+    public void setVenda_produtos(ArrayList<Venda_produto> venda_produtos) {
+        this.venda_produtos = venda_produtos;
+    }
 }

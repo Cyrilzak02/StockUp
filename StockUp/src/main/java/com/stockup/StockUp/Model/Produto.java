@@ -22,6 +22,8 @@ public class Produto {
     @Column(name = "qtd_estoque")
     private Integer qtd_estoque;
 
+    @Column(name= "preco_unitario")
+    private Float preco_unitario;
     @ManyToOne
     @JoinColumn(name = "manager_id")
     private Manager manager;
@@ -37,13 +39,16 @@ public class Produto {
 
 
 
-    public Produto( String descricao, String sku, Integer qtd_estoque, Manager manager, Categoria categoria) {
+
+
+    public Produto( String descricao, String sku, Integer qtd_estoque, Manager manager, Categoria categoria, Float preco_unitario) {
         this.descricao = descricao;
         this.sku = sku;
         this.qtd_estoque = qtd_estoque;
         this.manager = manager;
         this.categoria = categoria;
         this.abastecimento = new ArrayList<>();
+        this.preco_unitario = preco_unitario;
     }
 
     public Produto() {
@@ -96,5 +101,29 @@ public class Produto {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public Float getPreco_unitario() {
+        return preco_unitario;
+    }
+
+    public void setPreco_unitario(Float preco_unitario) {
+        this.preco_unitario = preco_unitario;
+    }
+
+    public ArrayList<FornecedorProduto> getAbastecimento() {
+        return abastecimento;
+    }
+
+    public void setAbastecimento(ArrayList<FornecedorProduto> abastecimento) {
+        this.abastecimento = abastecimento;
+    }
+
+    public ArrayList<Venda_produto> getVenda_produtos() {
+        return venda_produtos;
+    }
+
+    public void setVenda_produtos(ArrayList<Venda_produto> venda_produtos) {
+        this.venda_produtos = venda_produtos;
     }
 }
