@@ -45,4 +45,14 @@ public class Fornecedor {
     public void setRazao_social(String razao_social) {
         this.razao_social = razao_social;
     }
+
+    public ArrayList<FornecedorProduto> getAbastecimento() {
+        return abastecimento;
+    }
+
+    public void setAbastecimento(ArrayList<FornecedorProduto> abastecimento) {
+        this.abastecimento = abastecimento;
+    }
+
+
 }

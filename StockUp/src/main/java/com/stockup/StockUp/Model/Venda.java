@@ -36,6 +36,22 @@ public class Venda {
         this.funcionario = funcionario;
         this.venda_produtos = new ArrayList<>();
     }
+    @Transient
+    private ArrayList<VendaObserver> observers;
+
+    public void adicionarObserver(VendaObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removerObserver(VendaObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notificarObservers() {
+        for (VendaObserver observer : observers) {
+            observer.update(this);
+        }
+    }
 
     public Integer getIdVenda() {
         return idVenda;
@@ -71,5 +87,9 @@ public class Venda {
 
     public void setVenda_produtos(ArrayList<Venda_produto> venda_produtos) {
         this.venda_produtos = venda_produtos;
+    }
+
+    public ArrayList<Venda_produto> getVenda_produtos() {
+        return venda_produtos;
     }
 }
