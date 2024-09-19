@@ -22,7 +22,6 @@ public class Venda {
     private Date data_venda;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idFuncionario")
     @JoinColumn(name="idfuncionario")
     private Funcionario funcionario;
 

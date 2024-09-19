@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 public abstract class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idmanager")
     private Integer idmanager;
 
     @Column(name = "nome")

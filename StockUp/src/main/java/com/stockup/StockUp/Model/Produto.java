@@ -11,6 +11,7 @@ import java.util.Set;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idprodutos")
     private Integer idProdutos;
 
     @Column(name = "descricao")
@@ -25,11 +26,11 @@ public class Produto {
     @Column(name= "preco_unitario")
     private Float preco_unitario;
     @ManyToOne
-    @JoinColumn(name = "manager_id")
+    @JoinColumn(name = "idmanager")
     private Manager manager;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "idcategoria")
     private Categoria categoria;
 
     @OneToMany(mappedBy = "produto")
