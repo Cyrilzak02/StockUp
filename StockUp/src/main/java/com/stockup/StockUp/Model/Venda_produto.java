@@ -11,11 +11,11 @@ public class Venda_produto {
 
     @ManyToOne
     @MapsId("idVenda")
-    @JoinColumn(name = "idvendas")
+    @JoinColumn(name = "idvenda")
     private Venda venda;
     @ManyToOne
     @MapsId("idProduto")
-    @JoinColumn(name = "idprodutos")
+    @JoinColumn(name = "idproduto")
     private Produto produto;
 
     @Column(name = "qtd_produto")

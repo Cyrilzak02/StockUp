@@ -5,6 +5,7 @@ import com.stockup.StockUp.DTOs.VendaDTO;
 import com.stockup.StockUp.Model.Funcionario;
 import com.stockup.StockUp.Model.Produto;
 import com.stockup.StockUp.Model.Venda_produto;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class VendaController {
     @Autowired
     private RepositoryFuncionario repositoryFuncionario;
 
+
+    @Transactional
     @PostMapping("/create")
     public ResponseEntity<Venda> createVenda(@RequestBody VendaDTO vendaDTO) {
         // Create a new Venda
@@ -41,8 +44,11 @@ public class VendaController {
         // Save Venda first to get the ID
         Venda savedVenda = repositoryVenda.save(venda);
 
+
         // Handle Venda_Produto (Product associations)
         for (ProdutoDTO produtoDTO : vendaDTO.getProdutos()) {
+
+
             Produto produto = repositoryProduto.findById(produtoDTO.getProdutoId())
                     .orElseThrow(() -> new RuntimeException("Produto not found"));
 

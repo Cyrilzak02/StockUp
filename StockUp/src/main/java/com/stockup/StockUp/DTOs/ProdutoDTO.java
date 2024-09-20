@@ -4,6 +4,7 @@ public class ProdutoDTO {
     private Integer produtoId;
     private Integer qtd;
 
+
     // Getters and Setters
 
 
@@ -22,4 +23,6 @@ public class ProdutoDTO {
     public void setQtd(Integer qtd) {
         this.qtd = qtd;
     }
+
+
 }
