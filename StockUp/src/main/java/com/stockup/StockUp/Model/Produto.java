@@ -127,4 +127,19 @@ public class Produto {
     public void setVenda_produtos(ArrayList<Venda_produto> venda_produtos) {
         this.venda_produtos = venda_produtos;
     }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "idProdutos=" + idProdutos +
+                ", descricao='" + descricao + '\'' +
+                ", sku='" + sku + '\'' +
+                ", qtd_estoque=" + qtd_estoque +
+                ", preco_unitario=" + preco_unitario +
+                ", manager=" + manager +
+                ", categoria=" + categoria +
+                ", abastecimento=" + abastecimento +
+                ", venda_produtos=" + venda_produtos +
+                '}';
+    }
 }

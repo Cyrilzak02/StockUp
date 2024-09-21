@@ -2,15 +2,12 @@ package com.stockup.StockUp.Controller;
 
 import com.stockup.StockUp.DTOs.ProdutoDTO;
 import com.stockup.StockUp.DTOs.VendaDTO;
-import com.stockup.StockUp.Model.Funcionario;
-import com.stockup.StockUp.Model.Produto;
-import com.stockup.StockUp.Model.Venda_produto;
+import com.stockup.StockUp.Model.*;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.stockup.StockUp.repository.*;
-import com.stockup.StockUp.Model.Venda;
 
 @RestController
 @RequestMapping("/venda")
@@ -36,12 +33,12 @@ public class VendaController {
         venda.setValor(vendaDTO.getValor());
         venda.setData_venda(vendaDTO.getData_venda());
 
-        // Fetch Funcionario from DB
+
         Funcionario funcionario = repositoryFuncionario.findById(vendaDTO.getFuncionarioId())
                 .orElseThrow(() -> new RuntimeException("Funcionario not found"));
         venda.setFuncionario(funcionario);
 
-        // Save Venda first to get the ID
+
         Venda savedVenda = repositoryVenda.save(venda);
 
 
@@ -52,7 +49,14 @@ public class VendaController {
             Produto produto = repositoryProduto.findById(produtoDTO.getProdutoId())
                     .orElseThrow(() -> new RuntimeException("Produto not found"));
 
+
+
+
             Venda_produto vendaProduto = new Venda_produto();
+            Venda_produtoId venda_produtoId = new Venda_produtoId();
+            venda_produtoId.setIdProduto(produto.getIdProdutos());
+            venda_produtoId.setIdVenda(venda.getIdVenda());
+            vendaProduto.setVendaProdutoId(venda_produtoId);
             vendaProduto.setVenda(savedVenda);
             vendaProduto.setProduto(produto);
             vendaProduto.setQtd(produtoDTO.getQtd());
