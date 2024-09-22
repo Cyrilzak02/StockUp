@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "vendas")
@@ -13,7 +14,7 @@ public class Venda {
     private Integer idVenda;
 
     @OneToMany(mappedBy = "venda")
-    private ArrayList<Venda_produto> venda_produtos;
+    private List<Venda_produto> venda_produtos = new ArrayList<>();
 
     @Column(name = "valor_venda")
     private Float valor;
@@ -25,6 +26,8 @@ public class Venda {
     @JoinColumn(name="idfuncionario")
     private Funcionario funcionario;
 
+    @Transient
+    private List<VendaObserver> observers = new ArrayList<>();
 
     public Venda() {
     }
@@ -34,9 +37,9 @@ public class Venda {
         this.data_venda = data_venda;
         this.funcionario = funcionario;
         this.venda_produtos = new ArrayList<>();
+
     }
-    @Transient
-    private ArrayList<VendaObserver> observers;
+
 
     public void adicionarObserver(VendaObserver observer) {
         observers.add(observer);
@@ -88,7 +91,10 @@ public class Venda {
         this.venda_produtos = venda_produtos;
     }
 
-    public ArrayList<Venda_produto> getVenda_produtos() {
+    public void add_venda_produtos(Venda_produto vendaProduto){
+        this.venda_produtos.add(vendaProduto);
+    }
+    public List<Venda_produto> getVenda_produtos() {
         return venda_produtos;
     }
 }
