@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "manager")
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "manager_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idmanager")
     private Integer idmanager;
 
     @Column(name = "nome")
@@ -18,6 +20,12 @@ public abstract class Manager {
     private String email;
     @Column(name = "senha")
     private String password;
+
+
+
+
+
+
 
     public Manager( String nome, String cnpj, String email, String password) {
         this.nome = nome;
@@ -70,10 +78,9 @@ public abstract class Manager {
 
     abstract String gerar_relatorios();
 
-    public Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario){
-        return new Produto(descricao,sku,qtd_estoque,this,categoria,preco_unitario);
+    abstract String get_manager_type();
 
-    }
+
     public Produto editar_produto(Produto produto ,String descricao,Integer qtd_estoque, Categoria categoria, Float preco_unitario){
         produto.setDescricao(descricao);
         produto.setQtd_estoque(qtd_estoque);
@@ -81,8 +88,7 @@ public abstract class Manager {
         produto.setPreco_unitario(preco_unitario);
         return produto;
     }
-    
 
 
-
+    abstract Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario);
 }

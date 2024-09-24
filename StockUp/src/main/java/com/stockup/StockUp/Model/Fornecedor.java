@@ -18,7 +18,7 @@ public class Fornecedor {
     public Fornecedor(String razao_social) {
         this.razao_social = razao_social;
     }
-    @OneToMany(mappedBy = "fornecedores")
+    @OneToMany(mappedBy = "fornecedor")
     private ArrayList<FornecedorProduto> abastecimento;
 
     public Fornecedor() {

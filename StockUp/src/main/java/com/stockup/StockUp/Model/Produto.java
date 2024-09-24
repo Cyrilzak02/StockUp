@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,6 +12,7 @@ import java.util.Set;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idprodutos")
     private Integer idProdutos;
 
     @Column(name = "descricao")
@@ -24,29 +26,30 @@ public class Produto {
 
     @Column(name= "preco_unitario")
     private Float preco_unitario;
-    @ManyToOne
-    @JoinColumn(name = "manager_id")
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idmanager")
     private Manager manager;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "idcategoria")
     private Categoria categoria;
 
     @OneToMany(mappedBy = "produto")
-    private ArrayList<FornecedorProduto> abastecimento;
+    private List<FornecedorProduto> abastecimento;
     @OneToMany(mappedBy = "produto")
-    private ArrayList<Venda_produto> venda_produtos;
+    private List<Venda_produto> venda_produtos;
 
 
 
 
 
-    public Produto( String descricao, String sku, Integer qtd_estoque, Manager manager, Categoria categoria, Float preco_unitario) {
+    public Produto( String descricao, String sku, Integer qtd_estoque,Manager manager, Categoria categoria, Float preco_unitario) {
         this.descricao = descricao;
         this.sku = sku;
         this.qtd_estoque = qtd_estoque;
-        this.manager = manager;
         this.categoria = categoria;
+        this.manager = manager;
         this.abastecimento = new ArrayList<>();
         this.preco_unitario = preco_unitario;
     }
@@ -91,9 +94,7 @@ public class Produto {
         return manager;
     }
 
-    public void setManager(Manager manager) {
-        this.manager = manager;
-    }
+
 
     public Categoria getCategoria() {
         return categoria;
@@ -111,7 +112,7 @@ public class Produto {
         this.preco_unitario = preco_unitario;
     }
 
-    public ArrayList<FornecedorProduto> getAbastecimento() {
+    public List<FornecedorProduto> getAbastecimento() {
         return abastecimento;
     }
 
@@ -119,11 +120,26 @@ public class Produto {
         this.abastecimento = abastecimento;
     }
 
-    public ArrayList<Venda_produto> getVenda_produtos() {
+    public List<Venda_produto> getVenda_produtos() {
         return venda_produtos;
     }
 
     public void setVenda_produtos(ArrayList<Venda_produto> venda_produtos) {
         this.venda_produtos = venda_produtos;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "idProdutos=" + idProdutos +
+                ", descricao='" + descricao + '\'' +
+                ", sku='" + sku + '\'' +
+                ", qtd_estoque=" + qtd_estoque +
+                ", preco_unitario=" + preco_unitario +
+                ", manager=" + manager +
+                ", categoria=" + categoria +
+                ", abastecimento=" + abastecimento +
+                ", venda_produtos=" + venda_produtos +
+                '}';
     }
 }
