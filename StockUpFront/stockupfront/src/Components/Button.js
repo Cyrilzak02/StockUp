@@ -8,10 +8,14 @@ function Button(props) {
         border: 'none',
         borderRadius: props.borderRadius,
         cursor: 'pointer',
-        padding: '10px',
         fontSize: '16px',
         color: props.font_color,
-        fontFamily : 'Verdana '
+        fontFamily : 'Verdana ',
+        type: props.type,
+        marginLeft : props.marginLeft,
+        marginTop : props.marginTop
+
+
     };
 
     return (

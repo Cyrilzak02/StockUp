@@ -9,13 +9,21 @@ function InputFields(props) {
         padding: '10px',
         fontSize: '16px',
         color: props.font_color,
-        fontFamily : 'Verdana '
+        fontFamily : 'Verdana ',
+        marginLeft : '50px',
+        marginTop  : '10px'
     };
+    const label = {
+        color: props.title_color,
+        position: 'relative'
+    }
+
+
 
     return (
-        <div className="input-div">
-           <label>{props.title}</label>
-            <input style={inputstyle} type={props.type} id={props.id}/>
+        <div style={{width: "50%" , marginLeft : props.marginLeft , marginTop : props.marginTop}} >
+           <label style={label}>{props.title}</label><br/>
+            <input style={inputstyle} type={props.type} id={props.id} onChange={props.onChange}/>
         </div>
     );
 }
