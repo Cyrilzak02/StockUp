@@ -32,22 +32,38 @@ function Login(props) {
             return;
         }
 
-        // Log the form data
-        alert("Form submitted! Email:"+ email + "Password:" + password);
+        // Prepare the login data (payload)
+        const loginData = {
+            email: email,
+            password: password,
+        };
 
-        // Optionally, send data to a server (example with fetch)
-        /*
-        fetch("/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
+        // Send the POST request to the API
+        fetch('http://localhost:8080/authenticate_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Tell the API we're sending JSON
+            },
+            body: JSON.stringify(loginData), // Send the email and password as JSON
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-        */
+            .then(response => {
+                if (!response.ok) {
+                    // Handle non-200 responses (e.g., 401 Unauthorized)
+                    throw new Error('Login failed');
+                }
+                return response.json(); // Parse the response as JSON
+            })
+            .then(data => {
+                // Handle the successful response here (data contains the user info)
+                alert("Login succesful")
+                console.log('Login successful:', data);
+                // You could redirect the user or store the authentication token here
+            })
+            .catch(error => {
+                // Handle any errors from the fetch request
+                console.error('Error during login:', error);
+                alert('Login failed: ' + error.message);
+            });
     };
 
     return (
