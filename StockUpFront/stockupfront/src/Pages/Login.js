@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Button from "../Components/Button";
 import InputFields from "../Components/InputFields";
+import Popup from "../Components/PopUp";
 
 function Login(props) {
-    // State to store the form input values
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [popupMessage, setPopupMessage] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
 
     const div_login = {
         background: 'white',
@@ -22,32 +24,43 @@ function Login(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Validate the inputs
         if (email.length === 0) {
-            alert("Email is required!");
+            setPopupMessage("Email is required!");
+            setShowPopup(true);
             return;
         }
         if (password.length === 0) {
-            alert("Password is required!");
+            setPopupMessage("Password is required!");
+            setShowPopup(true);
             return;
         }
 
-        // Log the form data
-        alert("Form submitted! Email:"+ email + "Password:" + password);
+        const loginData = { email, password };
 
-        // Optionally, send data to a server (example with fetch)
-        /*
-        fetch("/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
+        fetch('http://localhost:8080/authenticate_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData),
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-        */
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setPopupMessage("Login successful");
+                setShowPopup(true);
+                console.log('Login successful:', data);
+                // Additional logic for successful login
+            })
+            .catch(error => {
+                setPopupMessage('Email or password are incorrect');
+                setShowPopup(true);
+                console.error('Error during login:', error);
+            });
     };
 
     return (
@@ -57,7 +70,6 @@ function Login(props) {
             </div>
 
             <form onSubmit={handleSubmit}>
-                {/* Email Input */}
                 <InputFields
                     title={"Email:"}
                     title_color={"black"}
@@ -70,7 +82,6 @@ function Login(props) {
                     type={"email"}
                 />
 
-                {/* Password Input */}
                 <InputFields
                     title={"Password:"}
                     title_color={"black"}
@@ -80,10 +91,9 @@ function Login(props) {
                     type={"password"}
                     marginLeft={"110px"}
                     marginTop={"50px"}
-                    onChange={(e) => setPassword(e.target.value)} // Update password state on change
+                    onChange={(e) => setPassword(e.target.value)}
                 />
 
-                {/* Submit Button */}
                 <Button
                     color_option={"green"}
                     width={"200px"}
@@ -96,6 +106,14 @@ function Login(props) {
                     marginTop={"100px"}
                 />
             </form>
+
+            {/* Show the Popup if showPopup is true */}
+            {showPopup && (
+                <Popup
+                    message={popupMessage}
+                    onClose={() => setShowPopup(false)}
+                />
+            )}
         </div>
     );
 }

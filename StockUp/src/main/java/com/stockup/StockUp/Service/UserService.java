@@ -14,7 +14,7 @@ import java.util.Optional;
         private RepositoryManager repositoryManager;
 
         public Optional<Manager> getUserByEmailAndPassword(String email, String password) {
-            return repositoryManager.findByEmailAndPassword(email, password);
+            return repositoryManager.findOneByEmailAndPassword(email, password);
         }
     }
 

@@ -20,7 +20,7 @@ function Button(props) {
 
     return (
         <div className="button-div">
-            <button style={buttonstyle}>
+            <button style={buttonstyle} onClick={props.onClick}>
                 {props.text}
             </button>
         </div>
