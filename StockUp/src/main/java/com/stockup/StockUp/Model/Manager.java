@@ -78,7 +78,7 @@ public abstract class Manager {
 
     abstract String gerar_relatorios();
 
-    abstract String get_manager_type();
+    public abstract String get_manager_type();
 
 
     public Produto editar_produto(Produto produto ,String descricao,Integer qtd_estoque, Categoria categoria, Float preco_unitario){
@@ -90,5 +90,5 @@ public abstract class Manager {
     }
 
 
-    abstract Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario);
+    public abstract Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario);
 }
