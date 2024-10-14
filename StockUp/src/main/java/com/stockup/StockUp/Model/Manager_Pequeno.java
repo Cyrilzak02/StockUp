@@ -23,7 +23,7 @@ public class Manager_Pequeno extends Manager {
         return "Pequeno";
     }
     @Override
-    Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario) {
+    public Produto cadastrar_produto(String descricao, String sku, Integer qtd_estoque, Categoria categoria, Float preco_unitario) {
         return new Produto(descricao,sku ,qtd_estoque , this ,categoria , preco_unitario);
     }
 }
