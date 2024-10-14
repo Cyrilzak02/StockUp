@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from "./../Components/Button";
 import InputFields from "./../Components/InputFields";
-
+import Popup from "./../Components/PopUp";
 
 export default function CadastrarProduto() {
   const [descricao, setDescricao] = useState('');
@@ -9,14 +9,15 @@ export default function CadastrarProduto() {
   const [categoriaId, setCategoria] = useState('');
   const [preco_unitario, setPreco] = useState('');
   const [sku, setSku] = useState('');
+  const [popupMessage, setPopupMessage] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
 
   const div_cadastro = {
     background: 'white',
-    height: "auto", // Para que a altura seja ajustada ao conteúdo
+    height: "auto",
     width: "600px",
     borderRadius: '10px',
   };
-
 
   const div_title = {
     color: 'black',
@@ -28,43 +29,40 @@ export default function CadastrarProduto() {
 
     // Validate the inputs
     if (descricao.length === 0) {
-      alert("Nome do produto é obrigatório!");
+      setPopupMessage("Nome do produto é obrigatório!");
+      setShowPopup(true);
       return;
     }
     if (qtd_estoque.length === 0) {
-      alert("Quantidade é obrigatória!");
+      setPopupMessage("Quantidade é obrigatória!");
+      setShowPopup(true);
       return;
     }
     if (categoriaId.length === 0) {
-      alert("Categoria é obrigatória!");
+      setPopupMessage("Categoria é obrigatória!");
+      setShowPopup(true);
       return;
     }
     if (preco_unitario.length === 0) {
-      alert("Preço é obrigatório!");
+      setPopupMessage("Preço é obrigatório!");
+      setShowPopup(true);
       return;
-    }
+    }else if (isNaN(parseFloat(preco_unitario)) || !isFinite(preco_unitario)) {
+      setPopupMessage("Preço deve ser um número válido!");
+      setShowPopup(true);
+      return;}
     if (sku.length === 0) {
-      alert("Data de validade é obrigatória!");
+      setPopupMessage("SKU é obrigatório!");
+      setShowPopup(true);
       return;
     }
 
     const managerId = 9;
     const managerType = "Grande";
-    setCategoria(11)
+    setCategoria(11);
 
-    // {
-    //   "descricao": "coco",
-    //   "sku": "prd001",
-    //   "qtd_estoque": 10,
-    //   "preco_unitario": 19.99,
-    //   "managerId": 9,
-    //   "managerType": "Grande",
-    //   "categoriaId": 11
-    // }
+    const cadastroProduto = { descricao, sku, qtd_estoque, preco_unitario, managerId, managerType, categoriaId };
 
-    
-    const cadastroProduto = {descricao, sku, qtd_estoque, preco_unitario, managerId, managerType, categoriaId};
-    console.log(JSON.stringify(cadastroProduto))
     fetch("http://localhost:8080/api/produtos", {
       method: "POST",
       headers: {
@@ -72,22 +70,29 @@ export default function CadastrarProduto() {
       },
       body: JSON.stringify(cadastroProduto),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erro na requisição: ' + response.status);
-      }
-      return response.text(); // Trocar para text() ao invés de json() para capturar a resposta como string
-    })
-    .then(text => {
-      // Verificar se a resposta não está vazia antes de tentar o JSON
-      if (text) {
-        const data = JSON.parse(text); // Converter para JSON se não estiver vazio
-        console.log(data);
-      } else {
-        console.log("Resposta vazia do servidor");
-      }
-    })
-    .catch(error => console.error('Error:', error));}
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na requisição: ' + response.status);
+        }
+        return response.text();
+      })
+      .then(text => {
+        if (text) {
+          const data = JSON.parse(text);
+          console.log(data);
+          setPopupMessage("Produto cadastrado com sucesso!");
+          setShowPopup(true);
+        } else {
+          setPopupMessage("Resposta vazia do servidor");
+          setShowPopup(true);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setPopupMessage('Erro ao cadastrar produto: ' + error.message);
+        setShowPopup(true);
+      });
+  };
 
   return (
     <div style={div_cadastro}>
@@ -108,7 +113,6 @@ export default function CadastrarProduto() {
           title_color="#000"
           marginLeft="110px"
           onChange={(e) => setDescricao(e.target.value)}
-          
           required
         />
         <InputFields
@@ -124,7 +128,6 @@ export default function CadastrarProduto() {
           marginLeft="110px"
           marginTop="20px"
           onChange={(e) => setEstoque(e.target.value)}
-          
           required
         />
         <InputFields
@@ -140,7 +143,6 @@ export default function CadastrarProduto() {
           marginLeft="110px"
           marginTop="20px"
           onChange={(e) => setCategoria(e.target.value)}
-          
           required
         />
         <InputFields
@@ -156,7 +158,6 @@ export default function CadastrarProduto() {
           marginLeft="110px"
           marginTop="20px"
           onChange={(e) => setPreco(e.target.value)}
-          
           required
         />
         <InputFields
@@ -172,7 +173,6 @@ export default function CadastrarProduto() {
           marginLeft="110px"
           marginTop="20px"
           onChange={(e) => setSku(e.target.value)}
-          
           required
         />
         <Button
@@ -185,9 +185,15 @@ export default function CadastrarProduto() {
           marginLeft="200px"
           marginTop="40px"
           type="submit"
-
         />
       </form>
+
+      {showPopup && (
+        <Popup
+          message={popupMessage}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </div>
   );
 }
