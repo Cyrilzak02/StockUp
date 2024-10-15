@@ -13,12 +13,12 @@ public class FornecedorProduto {
 
     @ManyToOne
     @MapsId("idProduto")
-    @JoinColumn(name ="idProduto")
+    @JoinColumn(name ="idproduto")
     private Produto produto;
 
     @ManyToOne
     @MapsId("idFornecedor")
-    @JoinColumn(name ="idFornecedor")
+    @JoinColumn(name ="idfornecedor")
     private Fornecedor fornecedor;
 
     @Column(name ="data_validade")

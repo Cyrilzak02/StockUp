@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -10,6 +11,7 @@ import java.util.Set;
 public class Fornecedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="idfornecedores")
     private Integer idFornecedor;
 
     @Column(name = "razao_social")
@@ -19,7 +21,7 @@ public class Fornecedor {
         this.razao_social = razao_social;
     }
     @OneToMany(mappedBy = "fornecedor")
-    private ArrayList<FornecedorProduto> abastecimento;
+    private List<FornecedorProduto> abastecimento;
 
     public Fornecedor() {
     }
@@ -46,7 +48,7 @@ public class Fornecedor {
         this.razao_social = razao_social;
     }
 
-    public ArrayList<FornecedorProduto> getAbastecimento() {
+    public List<FornecedorProduto> getAbastecimento() {
         return abastecimento;
     }
 

@@ -1,6 +1,7 @@
 package com.stockup.StockUp.Controller;
 
 import com.stockup.StockUp.DTOs.ProdutoDTO;
+import com.stockup.StockUp.DTOs.ProdutoVendaDTO;
 import com.stockup.StockUp.Model.Produto;
 import com.stockup.StockUp.Model.Categoria;
 import com.stockup.StockUp.Model.Manager;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -59,6 +61,21 @@ public class ProductController {
             repositoryProduto.save(produto);
 
             return ResponseEntity.ok(produto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Transactional
+    @GetMapping("/get_all_produto_infos")
+    public ResponseEntity<List<ProdutoVendaDTO>> getAllProdutoInfos() {
+        try {
+            List<ProdutoVendaDTO> produtos = repositoryProduto.findAllProdutoInfo();
+
+            if (produtos.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(produtos, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
