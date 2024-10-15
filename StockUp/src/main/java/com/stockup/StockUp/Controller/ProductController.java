@@ -30,7 +30,7 @@ public class ProductController {
     private RepositoryManager repositoryManager;
 
     @Transactional
-    @PostMapping
+    @PostMapping("/criar_produto")
     public ResponseEntity<Produto> createProduct(@RequestBody ProdutoDTO produtoDTO) {
         try {
 

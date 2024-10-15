@@ -63,7 +63,7 @@ export default function CadastrarProduto() {
 
     const cadastroProduto = { descricao, sku, qtd_estoque, preco_unitario, managerId, managerType, categoriaId };
 
-    fetch("http://localhost:8080/api/produtos", {
+    fetch("http://localhost:8080/api/produtos/criar_produto", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

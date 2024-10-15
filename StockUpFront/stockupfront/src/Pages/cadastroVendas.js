@@ -9,6 +9,8 @@ function CadastroVendas() {
     const [produtosAdicionados, setProdutosAdicionados] = useState([]);
     const [valorTotal, setValorTotal] = useState(0);
 
+
+
     const produtosDisponiveis = [
         { id: 'PRD0095', nome: 'farofa yoki', preco: 8.00, categoria: 'Acompanhamentos', validade: '16/10/2024', localizacao: 'Corredor 1, Prateleira B' },
         { id: 'PRD0043', nome: 'manteiga aviação', preco: 11.00, categoria: 'Laticínios', validade: '24/10/2024', localizacao: 'Corredor 2, Prateleira C' },
@@ -85,8 +87,7 @@ function CadastroVendas() {
                         <th style={{ border: '1px solid white', padding: '10px' }}>Quantidade</th>
                         <th style={{ border: '1px solid white', padding: '10px' }}>Categoria</th>
                         <th style={{ border: '1px solid white', padding: '10px' }}>Preço</th>
-                        <th style={{ border: '1px solid white', padding: '10px' }}>Data Validade</th>
-                        <th style={{ border: '1px solid white', padding: '10px' }}>Localização no Armazém</th>
+
                         <th style={{ border: '1px solid white', padding: '10px' }}>Excluir</th>
                     </tr>
                 </thead>
@@ -98,8 +99,6 @@ function CadastroVendas() {
                             <td style={{ border: '1px solid white', padding: '10px' }}>{produto.quantidade}</td>
                             <td style={{ border: '1px solid white', padding: '10px' }}>{produto.categoria}</td>
                             <td style={{ border: '1px solid white', padding: '10px' }}>R$ {produto.preco.toFixed(2)}</td>
-                            <td style={{ border: '1px solid white', padding: '10px' }}>{produto.validade}</td>
-                            <td style={{ border: '1px solid white', padding: '10px' }}>{produto.localizacao}</td>
                             <td style={{ border: '1px solid white', padding: '10px' }}>
                                 <Button
                                     color_option={"red"}
