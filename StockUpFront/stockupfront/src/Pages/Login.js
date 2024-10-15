@@ -58,7 +58,7 @@ function Login(props) {
 
                 console.log('Login successful:', data);
 
-                // Redireciona para a página de cadastro de produto após login bem-sucedido
+                sessionStorage.setItem('managerData', JSON.stringify(data));
                 navigate('/cadastrar-produto');
             })
             .catch(error => {
