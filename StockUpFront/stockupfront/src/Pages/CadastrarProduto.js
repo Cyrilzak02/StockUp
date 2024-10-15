@@ -176,7 +176,8 @@ export default function CadastrarProduto() {
                 value={categoriaId}
                 onChange={(e) => setCategoria(e.target.value)}
                 style={{
-                  width: '250px',
+                  width: '270px',
+                  height: '40px',
                   borderRadius: '5px',
                   backgroundColor: '#A9A9A9',
                   color: 'black',
