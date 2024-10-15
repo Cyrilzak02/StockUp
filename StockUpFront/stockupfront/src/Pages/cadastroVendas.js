@@ -8,12 +8,12 @@ function CadastroVendas() {
     const [produtosAdicionados, setProdutosAdicionados] = useState([]);
     const [valorTotal, setValorTotal] = useState(0);
     const [produtosDisponiveis, setProdutosDisponiveis] = useState([]);
-    const [funcionarioId] = useState(1); // Assume you have the employee ID available
+    const [funcionarioId] = useState(1);
     const [popupMessage, setPopupMessage] = useState('');
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/produtos/get_all_produto_infos') // Adjust the endpoint as needed
+        fetch('http://localhost:8080/api/produtos/get_all_produto_infos')
             .then(response => response.json())
             .then(data => setProdutosDisponiveis(data))
             .catch(error => console.error('Error fetching products:', error));
@@ -44,7 +44,7 @@ function CadastroVendas() {
     const concluirVenda = () => {
         const vendaData = {
             valor: valorTotal,
-            data_venda: new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
+            data_venda: new Date().toISOString().split('T')[0],
             funcionarioId: funcionarioId,
             produtos: produtosAdicionados.map(produto => ({
                 produtoId: produto.id,
@@ -52,7 +52,7 @@ function CadastroVendas() {
             }))
         };
 
-        fetch('http://localhost:8080/venda/create', { // Adjust the endpoint as needed
+        fetch('http://localhost:8080/venda/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -163,7 +163,7 @@ function CadastroVendas() {
                 </div>
             </div>
 
-            {/* Popup for messages */}
+
             {isPopupVisible && <Popup message={popupMessage} onClose={closePopup} />}
         </div>
     );
