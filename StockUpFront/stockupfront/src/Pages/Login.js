@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from "../Components/Button";
 import InputFields from "../Components/InputFields";
 import Popup from "../Components/PopUp";
@@ -8,6 +9,7 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
+    const navigate = useNavigate(); // Usando o hook useNavigate
 
     const div_login = {
         background: 'white',
@@ -53,8 +55,11 @@ function Login(props) {
             .then(data => {
                 setPopupMessage("Login successful");
                 setShowPopup(true);
+
                 console.log('Login successful:', data);
-                // Additional logic for successful login
+
+                // Redireciona para a página de cadastro de produto após login bem-sucedido
+                navigate('/cadastrar-produto');
             })
             .catch(error => {
                 setPopupMessage('Email or password are incorrect');
