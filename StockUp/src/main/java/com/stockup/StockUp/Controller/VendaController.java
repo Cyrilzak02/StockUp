@@ -45,15 +45,19 @@ public class VendaController {
         Venda savedVenda = repositoryVenda.save(venda);
         savedVenda.adicionarObserver(sistemaInventario);
 
+        // Fetch all products once and store in a map for quick access
+        List<Produto> produtosDisponiveis = repositoryProduto.findAll();
+        Map<Integer, Produto> produtosMap = produtosDisponiveis.stream()
+            .collect(Collectors.toMap(Produto::getIdProdutos, produto -> produto));
+
         // Handle Venda_Produto (Product associations)
         for (ProdutoDTO produtoDTO : vendaDTO.getProdutos()) {
+            Produto produto = produtosMap.get(produtoDTO.getProdutoId());
+            if (produto == null) {
+                throw new RuntimeException("Produto not found");
+            }
 
-
-            Produto produto = repositoryProduto.findById(produtoDTO.getProdutoId())
-                    .orElseThrow(() -> new RuntimeException("Produto not found"));
-
-            System.out.println("Before :"+produto.getQtd_estoque());
-
+            System.out.println("Before :" + produto.getQtd_estoque());
 
             Venda_produto vendaProduto = new Venda_produto();
             Venda_produtoId venda_produtoId = new Venda_produtoId();
@@ -65,13 +69,9 @@ public class VendaController {
             vendaProduto.setQtd(produtoDTO.getQtd());
             venda.add_venda_produtos(vendaProduto);
 
-
-
             repositoryVendaProduto.save(vendaProduto);
-
-
-
         }
+        
         repositoryVenda.save(venda);
         savedVenda.notificarObservers();
 
