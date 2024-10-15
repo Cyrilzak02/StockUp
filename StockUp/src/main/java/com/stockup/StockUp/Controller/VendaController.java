@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.stockup.StockUp.repository.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/venda")
 public class VendaController {
@@ -26,7 +27,7 @@ public class VendaController {
     @Autowired
     private  SistemaInventario sistemaInventario;
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @Transactional
     @PostMapping("/create")
     public ResponseEntity<Venda> createVenda(@RequestBody VendaDTO vendaDTO) {
