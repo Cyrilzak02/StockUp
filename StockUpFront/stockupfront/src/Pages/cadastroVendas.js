@@ -20,19 +20,23 @@ function CadastroVendas() {
     }, []);
 
     const adicionarProduto = () => {
-        const produtoSelecionado = produtosDisponiveis.find(p => p.descricao === produto);
-        if (produtoSelecionado) {
-            const novoProduto = {
-                ...produtoSelecionado,
-                quantidade: quantidade
-            };
-
-            setProdutosAdicionados([...produtosAdicionados, novoProduto]);
-            setValorTotal(valorTotal + (novoProduto.precoUnitario * quantidade));
-            setProduto('');
-            setQuantidade(1);
-        }
-    };
+    if (!produto || quantidade <= 0) {
+        setPopupMessage('Por favor, selecione um produto e uma quantidade válida.');
+        setIsPopupVisible(true);
+        return;
+    }
+    const produtoSelecionado = produtosDisponiveis.find(p => p.descricao === produto);
+    if (produtoSelecionado) {
+        const novoProduto = {
+            ...produtoSelecionado,
+            quantidade: quantidade
+        };
+        setProdutosAdicionados([...produtosAdicionados, novoProduto]);
+        setValorTotal(valorTotal + (novoProduto.precoUnitario * quantidade));
+        setProduto('');
+        setQuantidade(1);
+    }
+};
 
     const removerProduto = (id) => {
         const produtosFiltrados = produtosAdicionados.filter(p => p.id !== id);
