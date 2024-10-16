@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from "./../Components/Button";
 import InputFields from "./../Components/InputFields";
 import Popup from "./../Components/PopUp";
@@ -11,6 +11,36 @@ export default function CadastrarProduto() {
   const [sku, setSku] = useState('');
   const [popupMessage, setPopupMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [managerData, setManagerData] = useState(null);
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const data = sessionStorage.getItem('managerData');
+    if (data) {
+      const parsedData = JSON.parse(data);
+      setManagerData(parsedData);
+      console.log('Manager Data:', parsedData);
+    }
+
+    fetch("http://localhost:8080/categoria/get_all_categoria")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao buscar categorias: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(data => {
+          setCategorias(data);
+        })
+        .catch(error => {
+          console.error('Error fetching categories:', error);
+        });
+  }, []);
+
+  const managerId = managerData?.idManager;
+  const managerType = managerData?._manager_type;
+
+  console.log(managerId , managerType)
 
   const div_cadastro = {
     background: 'white',
@@ -47,21 +77,28 @@ export default function CadastrarProduto() {
       setPopupMessage("Preço é obrigatório!");
       setShowPopup(true);
       return;
-    }else if (isNaN(parseFloat(preco_unitario)) || !isFinite(preco_unitario)) {
+    } else if (isNaN(parseFloat(preco_unitario)) || !isFinite(preco_unitario)) {
       setPopupMessage("Preço deve ser um número válido!");
       setShowPopup(true);
-      return;}
+      return;
+    }
     if (sku.length === 0) {
       setPopupMessage("SKU é obrigatório!");
       setShowPopup(true);
       return;
     }
 
-    const managerId = 9;
-    const managerType = "Grande";
-    setCategoria(11);
+    const cadastroProduto = {
+      descricao,
+      sku,
+      qtd_estoque: parseInt(qtd_estoque, 10),
+      preco_unitario: parseFloat(preco_unitario),
+      managerId: managerId,
+      managerType,
+      categoriaId: parseInt(categoriaId, 10)
+    };
 
-    const cadastroProduto = { descricao, sku, qtd_estoque, preco_unitario, managerId, managerType, categoriaId };
+    console.log('Cadastro Produto:', cadastroProduto);
 
     fetch("http://localhost:8080/api/produtos/criar_produto", {
       method: "POST",
@@ -70,130 +107,144 @@ export default function CadastrarProduto() {
       },
       body: JSON.stringify(cadastroProduto),
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erro na requisição: ' + response.status);
-        }
-        return response.text();
-      })
-      .then(text => {
-        if (text) {
-          const data = JSON.parse(text);
-          console.log(data);
-          setPopupMessage("Produto cadastrado com sucesso!");
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.status);
+          }
+          return response.text();
+        })
+        .then(text => {
+          if (text) {
+            const data = JSON.parse(text);
+            console.log(data);
+            setPopupMessage("Produto cadastrado com sucesso!");
+            setShowPopup(true);
+          } else {
+            setPopupMessage("Resposta vazia do servidor");
+            setShowPopup(true);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          setPopupMessage('Erro ao cadastrar produto: ' + error.message);
           setShowPopup(true);
-        } else {
-          setPopupMessage("Resposta vazia do servidor");
-          setShowPopup(true);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setPopupMessage('Erro ao cadastrar produto: ' + error.message);
-        setShowPopup(true);
-      });
+        });
   };
 
   return (
-    <div style={div_cadastro}>
-      <div style={div_title}>
-        <h1 className="text-2xl font-bold mb-6">Cadastrar novo Produto</h1>
+      <div style={div_cadastro}>
+        <div style={div_title}>
+          <h1 className="text-2xl font-bold mb-6">Cadastrar novo Produto</h1>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <InputFields
+              id="name"
+              name="name"
+              title="Nome do produto:"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              color_option="#A9A9A9"
+              width="250px"
+              height="20px"
+              borderRadius="5px"
+              font_color="#000"
+              title_color="#000"
+              marginLeft="110px"
+              required
+          />
+          <InputFields
+              id="quantity"
+              name="quantity"
+              title="Quantidade:"
+              value={qtd_estoque}
+              onChange={(e) => setEstoque(e.target.value)}
+              color_option="#A9A9A9"
+              width="250px"
+              height="20px"
+              borderRadius="5px"
+              font_color="#111"
+              title_color="#000"
+              marginLeft="110px"
+              marginTop="20px"
+              required
+          />
+          <div style={{ marginLeft: "110px", marginTop: "20px" }}>
+            <label style={{ color: "#000" }}>Categoria:</label>
+            <br />
+            <select
+                value={categoriaId}
+                onChange={(e) => setCategoria(e.target.value)}
+                style={{
+                  width: '270px',
+                  height: '40px',
+                  borderRadius: '5px',
+                  backgroundColor: '#A9A9A9',
+                  color: 'black',
+                  marginLeft: '50px'
+                }}
+                required
+            >
+              <option value="">Selecione uma categoria</option>
+              {categorias.map((categoria) => (
+                  <option key={categoria.idCategoria} value={categoria.idCategoria}>
+                    {categoria.descricao}
+                  </option>
+              ))}
+            </select>
+          </div>
+          <InputFields
+              id="price"
+              name="price"
+              title="Preço:"
+              value={preco_unitario}
+              onChange={(e) => setPreco(e.target.value)}
+              color_option="#A9A9A9"
+              width="250px"
+              height="20px"
+              borderRadius="5px"
+              font_color="#000"
+              title_color="#000"
+              marginLeft="110px"
+              marginTop="20px"
+              required
+          />
+          <InputFields
+              id="sku"
+              name="SkuProduto"
+              title="SKU do produto:"
+              value={sku}
+              onChange={(e) => setSku(e.target.value)}
+              color_option="#A9A9A9"
+              width="250px"
+              height="20px"
+              borderRadius="5px"
+              font_color="#000"
+              title_color="#000"
+              marginLeft="110px"
+              marginTop="20px"
+              required
+          />
+          <Button
+              text="Incluir Produto"
+              color_option="green"
+              width="200px"
+              height="30px"
+              borderRadius="10px"
+              font_color="#fff"
+              marginLeft="200px"
+              marginTop="40px"
+              type="submit"
+          />
+        </form>
+
+        {showPopup && (
+            <Popup
+                message={popupMessage}
+                onClose={() => setShowPopup(false)}
+            />
+        )}
       </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <InputFields
-          id="name"
-          name="name"
-          title="Nome do produto:"
-          color_option="#A9A9A9"
-          width="250px"
-          height="20px"
-          borderRadius="5px"
-          font_color="#000"
-          title_color="#000"
-          marginLeft="110px"
-          onChange={(e) => setDescricao(e.target.value)}
-          required
-        />
-        <InputFields
-          id="quantity"
-          name="quantity"
-          title="Quantidade:"
-          color_option="#A9A9A9"
-          width="250px"
-          height="20px"
-          borderRadius="5px"
-          font_color="#111"
-          title_color="#000"
-          marginLeft="110px"
-          marginTop="20px"
-          onChange={(e) => setEstoque(e.target.value)}
-          required
-        />
-        <InputFields
-          id="category"
-          name="category"
-          title="Categoria:"
-          color_option="#A9A9A9"
-          width="250px"
-          height="20px"
-          borderRadius="5px"
-          font_color="#000"
-          title_color="#000"
-          marginLeft="110px"
-          marginTop="20px"
-          onChange={(e) => setCategoria(e.target.value)}
-          required
-        />
-        <InputFields
-          id="price"
-          name="price"
-          title="Preço:"
-          color_option="#A9A9A9"
-          width="250px"
-          height="20px"
-          borderRadius="5px"
-          font_color="#000"
-          title_color="#000"
-          marginLeft="110px"
-          marginTop="20px"
-          onChange={(e) => setPreco(e.target.value)}
-          required
-        />
-        <InputFields
-          id=""
-          name="SkuProduto"
-          title="SKU do produto:"
-          color_option="#A9A9A9"
-          width="250px"
-          height="20px"
-          borderRadius="5px"
-          font_color="#000"
-          title_color="#000"
-          marginLeft="110px"
-          marginTop="20px"
-          onChange={(e) => setSku(e.target.value)}
-          required
-        />
-        <Button
-          text="Incluir Produto"
-          color_option="green"
-          width="200px"
-          height="30px"
-          borderRadius="10px"
-          font_color="#fff"
-          marginLeft="200px"
-          marginTop="40px"
-          type="submit"
-        />
-      </form>
-
-      {showPopup && (
-        <Popup
-          message={popupMessage}
-          onClose={() => setShowPopup(false)}
-        />
-      )}
-    </div>
   );
 }
+

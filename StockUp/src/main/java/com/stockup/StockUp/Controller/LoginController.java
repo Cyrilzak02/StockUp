@@ -23,16 +23,16 @@ public class LoginController {
         String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();
 
-        // Attempt to find the user with the provided email and password
+
         Optional<Manager> userOpt = userService.getUserByEmailAndPassword(email, password);
 
 
         if (userOpt.isPresent()) {
             Manager user = userOpt.get();
-            return ResponseEntity.ok(user);  // Return 200 OK with user data
+            return ResponseEntity.ok(user);
         }
 
-        // If authentication fails, return a 401 Unauthorized status with a message
+
         return ResponseEntity.status(401).body("Invalid email or password");
 
 
