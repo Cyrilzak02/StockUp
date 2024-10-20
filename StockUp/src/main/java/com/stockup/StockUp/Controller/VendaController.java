@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.stockup.StockUp.repository.*;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/venda")
